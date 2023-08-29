@@ -8,9 +8,9 @@
     * Returns true if the sequence is valid, returns false otherwise.
     * A sequence is valid if it contains only the characters ['a', 'A', 't', 'T', 'g', 'G', 'c', 'C'].
 */
-bool verifySequence(const std::string &sequence) {
-    for(char nucleotide: sequence) {
-        switch(nucleotide) {
+bool verifySequence(const char *sequence, size_t length) {
+    while(length--) {
+        switch(*sequence) {
             case 'a':
             case 'A':
             case 't':
@@ -23,6 +23,7 @@ bool verifySequence(const std::string &sequence) {
             default:
                 return false;
         }
+        ++sequence;
     }
     return true;
 }
@@ -72,8 +73,8 @@ DNASequence::DNASequence(const std::string sequence) {
     char *seq_ptr;
     size_t i;
 
-    /* Check if the DNA Sequence is valid*/
-    if(verifySequence(sequence) == false) {
+    /* Check if the DNA Sequence is valid */
+    if(verifySequence(&sequence[0], sequence.size()) == false) {
         printf("DNASequence Error: the provided sequence string has an invalid Nucleotide value!\n");
         this->m_size = 0;
         this->m_sequence = nullptr;
