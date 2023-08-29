@@ -1,6 +1,31 @@
 #include "dna_sequence.hpp"
 
+#include <iostream>
+
 /* ----- DNASequence Utility Functions ----- */
+
+/*
+    * Returns true if the sequence is valid, returns false otherwise.
+    * A sequence is valid if it contains only the characters ['a', 'A', 't', 'T', 'g', 'G', 'c', 'C'].
+*/
+bool verifySequence(const std::string &sequence) {
+    for(char nucleotide: sequence) {
+        switch(nucleotide) {
+            case 'a':
+            case 'A':
+            case 't':
+            case 'T':
+            case 'g':
+            case 'G':
+            case 'c':
+            case 'C':
+                break;
+            default:
+                return false;
+        }
+    }
+    return true;
+}
 
 /*
     * hashes 4 nucleotides into 1 character from left to right
@@ -46,6 +71,14 @@ DNASequence::DNASequence() {
 DNASequence::DNASequence(const std::string sequence) {
     char *seq_ptr;
     size_t i;
+
+    /* Check if the DNA Sequence is valid*/
+    if(verifySequence(sequence) == false) {
+        printf("DNASequence Error: the provided sequence string has an invalid Nucleotide value!\n");
+        this->m_size = 0;
+        this->m_sequence = nullptr;
+        return;
+    }
 
     /* Initialize DNA Sequence size and allocate memory for the sequence */
     this->m_size = sequence.size();
