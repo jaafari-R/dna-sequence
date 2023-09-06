@@ -66,12 +66,12 @@ char hashNucleotides(const char *patch, size_t len = 4) {
 /*
 
 */
-void fillSequence(char **sequence, const char *sequence_string, size_t size) {
+void fillSequence(std::unique_ptr<char> &sequence, const char *sequence_string, size_t size) {
     char *seq_ptr;
     
     /* Initialize DNA Sequence size and allocate memory for the sequence */
-    *sequence = new char[size / 4 + (size % 4 == 0 ? 0 : 1)];
-    seq_ptr = *sequence;
+    sequence = std::unique_ptr<char>(new char[size / 4 + (size % 4 == 0 ? 0 : 1)]);
+    seq_ptr = sequence.get();
 
     /* Copy and Compress DNA Sequence */
     for(; size > 3; size -= 4) {
@@ -103,7 +103,7 @@ DNASequence::DNASequence(const std::string &sequence) {
     }
 
     /* Fill in the sequence with Nuclutides and set its size */
-    fillSequence(&this->m_sequence, &sequence[0], sequence.size());
+    fillSequence(this->m_sequence, &sequence[0], sequence.size());
     this->m_size = sequence.size();
 }
 
@@ -130,18 +130,15 @@ DNASequence::DNASequence(const char* sequence, size_t size = -1) {
     }
 
     /* Fill in the sequence with Nuclutides and set its size */
-    fillSequence(&this->m_sequence, sequence, size);
+    fillSequence(this->m_sequence, sequence, size);
     this->m_size = size;
 }
 
 
 DNASequence::DNASequence(const DNASequence &sequence) {
-    fillSequence(&this->m_sequence, sequence.m_sequence, sequence.m_size);
+    fillSequence(this->m_sequence, sequence.m_sequence.get(), sequence.m_size);
     this->m_size = sequence.m_size;
 }
 
 
-DNASequence::~DNASequence() {
-    if(m_sequence != nullptr)
-        delete[] m_sequence;
-}
+DNASequence::~DNASequence() {}

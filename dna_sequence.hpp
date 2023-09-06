@@ -4,6 +4,7 @@
 #define DNA_SEQUENCE
 
 #include <string>
+#include <memory>
 
 /*  
     * This class is a representation of a DNA Sequence,
@@ -37,7 +38,7 @@ public:
     /* Clears the DNA Sequence from the memory */
     ~DNASequence();
 private:
-    char *m_sequence;
+    std::unique_ptr<char> m_sequence;
     size_t m_size;
 };
 
