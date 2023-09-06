@@ -22,7 +22,7 @@ public:
         * If the DNA Sequence has a character other than 'a', 't', 'g', 'c', 'A', 'T', 'G', 'C'
         * the created sequence will be empty and an error message will be printed/output
     */
-    DNASequence(const std::string sequence);
+    DNASequence(const std::string &sequence);
     
     /* 
         * Create a DNA Sequence that equals the values presented in the c string.

@@ -63,6 +63,28 @@ char hashNucleotides(const char *patch, size_t len = 4) {
     return hash;
 }
 
+/*
+
+*/
+void fillSequence(char **sequence, const char *sequence_string, size_t size) {
+    char *seq_ptr;
+    
+    /* Initialize DNA Sequence size and allocate memory for the sequence */
+    *sequence = new char[size / 4 + (size % 4 == 0 ? 0 : 1)];
+    seq_ptr = *sequence;
+
+    /* Copy and Compress DNA Sequence */
+    for(; size > 3; size -= 4) {
+        *seq_ptr = hashNucleotides(sequence_string);
+        ++seq_ptr;
+        sequence_string += 4;
+    }
+
+    /* Check if we need nucleotides with padding at the end add them */
+    if(size > 0)
+        *seq_ptr = hashNucleotides(sequence_string, size);
+}
+
 /* ---------- DNASequence Methods ---------- */
 
 DNASequence::DNASequence() {
@@ -71,10 +93,7 @@ DNASequence::DNASequence() {
 }
 
 
-DNASequence::DNASequence(const std::string sequence) {
-    char *seq_ptr;
-    size_t i;
-
+DNASequence::DNASequence(const std::string &sequence) {
     /* Check if the DNA Sequence is valid */
     if(verifySequence(&sequence[0], sequence.size()) == false) {
         printf("DNASequence Error: the provided sequence string has an invalid Nucleotide value!\n");
@@ -83,34 +102,23 @@ DNASequence::DNASequence(const std::string sequence) {
         return;
     }
 
-    /* Initialize DNA Sequence size and allocate memory for the sequence */
+    /* Fill in the sequence with Nuclutides and set its size */
+    fillSequence(&this->m_sequence, &sequence[0], sequence.size());
     this->m_size = sequence.size();
-    this->m_sequence = new char[this->m_size / 4 + (this->m_size % 4 == 0 ? 0 : 1)];
-    seq_ptr = this->m_sequence;
-
-    /* Copy and Compress DNA Sequence */
-    for(i = 4; i <= this->m_size; i += 4) {
-        *seq_ptr = hashNucleotides(&sequence[i-4]);
-        ++seq_ptr;
-    }
-
-    /* Check if we need nucleotides with padding at the end add them */
-    i -= 4;
-    if(i != this->m_size)
-        *seq_ptr = hashNucleotides(&sequence[i], this->m_size - i + 1);
 }
 
 
-DNASequence::DNASequence(const char* sequence, const size_t size) {
-    char *seq_ptr;
-    size_t i;
-    size_t size = 0;
+DNASequence::DNASequence(const char* sequence, size_t size = -1) {
+    const char *seq_ptr;
 
     /* Get the sequence size */
-    seq_ptr = sequence;
-    while(*seq_ptr != '\0') {
-        ++size;
-        ++seq_ptr;
+    if(size == -1) {
+        size = 0;
+        seq_ptr = sequence;
+        while(*seq_ptr != '\0') {
+            ++size;
+            ++seq_ptr;
+        }
     }
 
     /* Check if the DNA Sequence is valid */
@@ -121,21 +129,9 @@ DNASequence::DNASequence(const char* sequence, const size_t size) {
         return;
     }
 
-    /* Initialize DNA Sequence size and allocate memory for the sequence */
+    /* Fill in the sequence with Nuclutides and set its size */
+    fillSequence(&this->m_sequence, sequence, size);
     this->m_size = size;
-    this->m_sequence = new char[size / 4 + (size % 4 == 0 ? 0 : 1)];
-    seq_ptr = this->m_sequence;
-
-    /* Copy and Compress DNA Sequence */
-    for(; size > 3; size -= 4) {
-        *seq_ptr = hashNucleotides(sequence);
-        ++seq_ptr;
-        sequence += 4;
-    }
-
-    /* Check if we need nucleotides with padding at the end add them */
-    if(size > 0)
-        *seq_ptr = hashNucleotides(sequence, size);
 }
 
 
