@@ -135,6 +135,12 @@ DNASequence::DNASequence(const char* sequence, size_t size = -1) {
 }
 
 
+DNASequence::DNASequence(const DNASequence &sequence) {
+    fillSequence(&this->m_sequence, sequence.m_sequence, sequence.m_size);
+    this->m_size = sequence.m_size;
+}
+
+
 DNASequence::~DNASequence() {
     if(m_sequence != nullptr)
         delete[] m_sequence;

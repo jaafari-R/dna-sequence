@@ -12,5 +12,9 @@ int main() {
     DNASequence dna_seq2("ttttt");
     DNASequence dna_seq3("aaaaq");
 
+    DNASequence dna_seq_copy1(dna_seq_cs1);
+    DNASequence dna_seq_copy2(dna_seq2);
+    DNASequence dna_seq_copy3(dna_seq);
+
     return 0;
 }
