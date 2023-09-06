@@ -16,5 +16,8 @@ int main() {
     DNASequence dna_seq_copy2(dna_seq2);
     DNASequence dna_seq_copy3(dna_seq);
 
+    DNASequence seq_pair_2 = dna_seq2.pairSequence();
+    DNASequence seq_pair_cp = seq_pair_2.pairSequence();
+
     return 0;
 }

@@ -39,7 +39,7 @@ bool verifySequence(const char *sequence, size_t length) {
 char hashNucleotides(const char *patch, size_t len = 4) {
     char hash = 0;
 
-    for(int i = 0; i < len; ++i) {
+    for(size_t i = 0; i < len; ++i) {
         switch(*patch) {
             // case 'A':
             // case 'a':
@@ -70,7 +70,7 @@ void fillSequence(std::unique_ptr<char> &sequence, const char *sequence_string, 
     char *seq_ptr;
     
     /* Initialize DNA Sequence size and allocate memory for the sequence */
-    sequence = std::unique_ptr<char>(new char[size / 4 + (size % 4 == 0 ? 0 : 1)]);
+    sequence = std::unique_ptr<char>(new char[(size + 3) / 4]);
     seq_ptr = sequence.get();
 
     /* Copy and Compress DNA Sequence */
@@ -136,12 +136,37 @@ DNASequence::DNASequence(const char* sequence, size_t size = -1) {
 
 
 DNASequence::DNASequence(const DNASequence &sequence) {
-    fillSequence(this->m_sequence, sequence.m_sequence.get(), sequence.m_size);
+    size_t seq_size = (sequence.m_size + 3) / 4;
+
     this->m_size = sequence.m_size;
+    this->m_sequence = std::unique_ptr<char>(new char[seq_size]);
+
+    char *copy_seq_ptr = sequence.m_sequence.get();
+    char *seq_ptr = this->m_sequence.get();
+
+    for(size_t i = 0; i < seq_size; ++i) {
+        *seq_ptr = *copy_seq_ptr;
+        ++seq_ptr;
+        ++copy_seq_ptr;
+    }
 }
 
 
 DNASequence::~DNASequence() {}
+
+DNASequence DNASequence::pairSequence() {
+    DNASequence pair_sequence(*this);
+
+    char *seq_ptr = pair_sequence.m_sequence.get();
+    size_t seq_end = (pair_sequence.m_size + 3) / 4;
+    
+    for(size_t i = 0; i < seq_end; ++i) {
+        *seq_ptr ^= 85;
+        ++seq_ptr;
+    }
+
+    return pair_sequence;
+}
 
 
 /* -- Getters -- */

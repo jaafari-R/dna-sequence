@@ -38,9 +38,19 @@ public:
     /* Clears the DNA Sequence from the memory */
     ~DNASequence();
 
+    /* 
+        * Creates and Returns the pair sequence
+        * In a Pair Sequence, each Nucleutide is replaced with its pair:
+            A is replaced with T
+            T is replaced with A
+            G is replaced with C
+            C is replaced with G
+    */
+    DNASequence pairSequence();
 
     /* getters */
     size_t getSize();
+
 private:
     std::unique_ptr<char> m_sequence;
     size_t m_size;
