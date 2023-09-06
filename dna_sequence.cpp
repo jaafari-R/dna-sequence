@@ -142,3 +142,11 @@ DNASequence::DNASequence(const DNASequence &sequence) {
 
 
 DNASequence::~DNASequence() {}
+
+
+/* -- Getters -- */
+
+size_t DNASequence::getSize() {
+    return this->m_size;
+}
+

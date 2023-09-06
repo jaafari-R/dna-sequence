@@ -4,7 +4,7 @@
 int main() {
     const char *cstr1 = "atgc";
     const char *cstr2 = "";
-     
+
     DNASequence dna_seq_cs1(cstr1);
     DNASequence dna_seq_cs2(cstr2);
 

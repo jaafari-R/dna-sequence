@@ -37,6 +37,10 @@ public:
 
     /* Clears the DNA Sequence from the memory */
     ~DNASequence();
+
+
+    /* getters */
+    size_t getSize();
 private:
     std::unique_ptr<char> m_sequence;
     size_t m_size;
