@@ -36,8 +36,8 @@ bool verifySequence(const char *sequence, size_t length) {
     * 'G' or 'g' become '10' in binary
     * 'C' or 'c' become '11' in binary
 */
-char hashNucleotides(const char *patch, size_t len = 4) {
-    char hash = 0;
+char compressNucleotides(const char *patch, size_t len = 4) {
+    char compressed = 0;
 
     for(size_t i = 0; i < len; ++i) {
         switch(*patch) {
@@ -47,21 +47,51 @@ char hashNucleotides(const char *patch, size_t len = 4) {
                 // break;
             case 'T':
             case 't':
-                hash += 1 << (6 - i*2);
+                compressed += 1 << (6 - i*2);
                 break;
             case 'G':
             case 'g':
-                hash += 2 << (6 - i*2);
+                compressed += 2 << (6 - i*2);
                 break;
             case 'C':
             case 'c':
-                hash += 3 << (6 - i*2);
+                compressed += 3 << (6 - i*2);
                 break;            
         }
         ++patch;
     }
-    return hash;
+    return compressed;
 }
+
+/*
+*/
+std::string decompressNucleotides(const char compressed, size_t len = 4) {
+    std::string decompressed(len, ' ');
+    unsigned char offset = 6;
+    char value;
+
+    for(size_t i = 0; i < len; ++i) {
+        value = (compressed >> offset) & 0b11;
+        offset -= 2;
+
+        switch(value) {
+            case 0b00:
+                decompressed[i] = 'A';
+                break;
+            case 0b01:
+                decompressed[i] = 'T';
+                break;
+            case 0b10:
+                decompressed[i] = 'G';
+                break;
+            case 0b11:
+                decompressed[i] = 'C';
+                break;
+        }
+    }
+    return decompressed;
+}
+
 
 /*
 
@@ -75,14 +105,14 @@ void fillSequence(std::unique_ptr<char> &sequence, const char *sequence_string, 
 
     /* Copy and Compress DNA Sequence */
     for(; size > 3; size -= 4) {
-        *seq_ptr = hashNucleotides(sequence_string);
+        *seq_ptr = compressNucleotides(sequence_string);
         ++seq_ptr;
         sequence_string += 4;
     }
 
     /* Check if we need nucleotides with padding at the end add them */
     if(size > 0)
-        *seq_ptr = hashNucleotides(sequence_string, size);
+        *seq_ptr = compressNucleotides(sequence_string, size);
 }
 
 /* ---------- DNASequence Methods ---------- */
