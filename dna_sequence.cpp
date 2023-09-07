@@ -30,7 +30,7 @@ bool verifySequence(const char *sequence, size_t length) {
 
 
 /*
-    * hashes 4 nucleotides into 1 character from left to right
+    * compresses 4 nucleotides into 1 character from left to right
     * 'A' or 'a' become '00' in binary
     * 'T' or 't' become '01' in binary
     * 'G' or 'g' become '10' in binary
@@ -64,6 +64,12 @@ char compressNucleotides(const char *patch, size_t len = 4) {
 }
 
 /*
+    * Decompresses a patch of up to 4 Nucleotides from 1 char to a string
+    * '00' becomes 'A'
+    * '01' becomes 'T'
+    * '10' becomes 'G'
+    * '11' becomes 'C'
+    * Example: 0b00011011 becomes "ATGC"
 */
 std::string decompressNucleotides(const char compressed, size_t len = 4) {
     std::string decompressed(len, ' ');
