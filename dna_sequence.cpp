@@ -205,6 +205,36 @@ DNASequence DNASequence::pairSequence() {
 }
 
 
+void DNASequence::reverseSequence(size_t start, size_t end) {
+    if(start >= this->m_size)
+        return;
+
+    char *sequence = this->m_sequence.get();
+    size_t pos_start, pos_end, offset_start, offset_end;
+    char start_val, end_val;
+
+    /* make sure end points to the last specified element in the reversed subsequence */
+    end = (end > this->m_size ? this->m_size : end) - 1;
+
+    for(; start < end; ++start, --end) {
+        pos_start = start / 4;
+        pos_end = end / 4;
+        offset_start = 6 - (start - pos_start) * 2;
+        offset_end = 6 - (end - pos_end) * 2;
+
+        start_val = (sequence[pos_start] >> offset_start) & 0b11;
+        end_val = (sequence[pos_end] >> offset_end) &0b11;
+
+        start_val ^= end_val;
+        end_val ^= start_val;
+        start_val ^= end_val;
+
+        sequence[pos_start] = (sequence[pos_start] & (0b11111111 ^ (11 << offset_start))) | (start_val << offset_start);
+        sequence[pos_end] = (sequence[pos_end] & (0b11111111 ^ (11 << offset_end))) | (end_val << offset_end);
+    }
+}
+
+
 /* -- Getters -- */
 
 size_t DNASequence::getSize() {

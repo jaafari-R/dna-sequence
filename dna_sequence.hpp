@@ -48,6 +48,18 @@ public:
     */
     DNASequence pairSequence();
 
+    /*
+        * Reverses the sequence in the range [start, end)
+           'end' is not included, the length of the reversed value is 
+           end - start.
+        * The sequence is 0-indexed.
+        * If only 'start' was given (end == -1) or 'end' was bigger than the sequence size,
+           then the sequence is reversed from 'start' to the end of the sequence.
+        * If 'start' was not set (start == 0), then the entire sequence is reversed.
+        * If 'start was set to a value bigger or equal to the the sequence length, then nothing happens
+    */
+    void reverseSequence(size_t start = 0, size_t end = -1);
+
     /* getters */
     size_t getSize();
 
