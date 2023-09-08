@@ -38,11 +38,16 @@ int main() {
     std::cout << s << std::endl;
 
     s = dna_seq4.getSequenceStr();
+    char* cs = dna_seq4.getSequenceCStr();
     std::cout << s << std::endl;
+    std::cout << cs << std::endl;
     dna_seq4.reverseSequence();
     s = dna_seq4.getSequenceStr();
+    cs = dna_seq4.getSequenceCStr();
     std::cout << s << std::endl;
+    std::cout << cs<< std::endl;
     std::cout << dna_seq4.pairSequence().getSequenceStr() << std::endl;
+    std::cout << dna_seq4.pairSequence().getSequenceCStr() << std::endl;
 
     return 0;
 }

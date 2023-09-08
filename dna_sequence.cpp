@@ -257,3 +257,27 @@ std::string DNASequence::getSequenceStr() {
 
     return sequence_str;
 }
+
+char* DNASequence::getSequenceCStr() {
+    char *sequence_str =  new char[this->m_size + 1];
+
+    size_t size = this->m_size;
+    std::string nucleotides_patch(4, ' ');
+    char *seq_ptr = this->m_sequence.get();
+    size_t i, j, loop_end;
+
+    for(i = 0, loop_end = size - 3; i < loop_end;) {
+        nucleotides_patch.replace(0, 4, decompressNucleotides(*seq_ptr));
+        for(j = 0; j < 4; ++j, ++i)
+            sequence_str[i] = nucleotides_patch[j];
+        ++seq_ptr;
+    }
+    if(i != size) {
+        nucleotides_patch = decompressNucleotides(*seq_ptr, size - i);
+        for(j = 0; i < size; ++j, ++i)
+            sequence_str[i] = nucleotides_patch[j];
+    }
+    sequence_str[this->m_size] = '\0';
+
+    return sequence_str;
+}
