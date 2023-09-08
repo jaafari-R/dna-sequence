@@ -219,8 +219,8 @@ void DNASequence::reverseSequence(size_t start, size_t end) {
     for(; start < end; ++start, --end) {
         pos_start = start / 4;
         pos_end = end / 4;
-        offset_start = 6 - (start - pos_start) * 2;
-        offset_end = 6 - (end - pos_end) * 2;
+        offset_start = 6 - (start % 4) * 2;
+        offset_end = 6 - (end % 4) * 2;
 
         start_val = (sequence[pos_start] >> offset_start) & 0b11;
         end_val = (sequence[pos_end] >> offset_end) &0b11;
@@ -229,8 +229,8 @@ void DNASequence::reverseSequence(size_t start, size_t end) {
         end_val ^= start_val;
         start_val ^= end_val;
 
-        sequence[pos_start] = (sequence[pos_start] & (0b11111111 ^ (11 << offset_start))) | (start_val << offset_start);
-        sequence[pos_end] = (sequence[pos_end] & (0b11111111 ^ (11 << offset_end))) | (end_val << offset_end);
+        sequence[pos_start] = (sequence[pos_start] & (0b11111111 ^ (0b11 << offset_start))) | (start_val << offset_start);
+        sequence[pos_end] = (sequence[pos_end] & (0b11111111 ^ (0b11 << offset_end))) | (end_val << offset_end);
     }
 }
 
@@ -241,3 +241,19 @@ size_t DNASequence::getSize() {
     return this->m_size;
 }
 
+std::string DNASequence::getSequenceStr() {
+    std::string sequence_str(this->m_size, '\0');
+    size_t size = this->m_size;
+    char *seq_ptr = this->m_sequence.get();
+    size_t i, loop_end;
+
+
+    for(i = 0, loop_end = size - 3; i < loop_end; i += 4) {
+        sequence_str.replace(i, 4, decompressNucleotides(*seq_ptr));
+        ++seq_ptr;
+    }
+    if(i != size)
+        sequence_str.replace(i, size - i, decompressNucleotides(*seq_ptr, size - i));
+
+    return sequence_str;
+}

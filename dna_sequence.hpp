@@ -35,7 +35,6 @@ public:
     
     DNASequence(const DNASequence &sequence);
 
-    /* Clears the DNA Sequence from the memory */
     ~DNASequence();
 
     /* 
@@ -62,6 +61,8 @@ public:
 
     /* getters */
     size_t getSize();
+    std::string getSequenceStr();
+    char* getSequenceCStr();
 
 private:
     std::unique_ptr<char> m_sequence;
