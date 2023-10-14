@@ -59,6 +59,15 @@ public:
     */
     void reverseSequence(size_t start = 0, size_t end = -1);
 
+    /*
+        * Returns a slice of the current DNASequence.
+        * The slice starts at index 'start' and ends at index 'end', index 'end' is not included in the slice
+        * The size of the slice is 'end' - 'start'.
+        * if end is not specified, the slice is from 'start' to the end of the sequence.
+        * if start is equalt to or bigger than end or the slice size, an empty sequence is returned 
+    */
+    DNASequence slice(size_t start = 0, size_t end = -1);
+
     /* getters */
     size_t getSize();
     std::string getSequenceStr();

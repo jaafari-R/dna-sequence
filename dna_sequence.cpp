@@ -281,3 +281,34 @@ char* DNASequence::getSequenceCStr() {
 
     return sequence_str;
 }
+
+
+DNASequence DNASequence::slice(size_t start, size_t end) {
+    std::string seq_slice;
+    size_t i;
+    const char *sequence = this->m_sequence.get();
+
+    end = (end >= this->m_size ? this->m_size : end) - 1;
+
+    if(start >= end) {
+        return DNASequence();
+    }
+
+    i = start / 4;
+    if(start % 4) {
+        seq_slice.append(decompressNucleotides(sequence[i] << ((start % 4) * 2), 4 - start % 4));
+        start += 4 - start % 4;
+        ++i;
+    }
+
+    for(size_t loop_end = end - 3; start < loop_end; start += 4, i) {
+        seq_slice.append(decompressNucleotides(sequence[i++]));
+    }
+
+    if(start != end) {
+        seq_slice.append(decompressNucleotides(sequence[i], end + 1 - start));
+    }
+
+    return DNASequence(seq_slice);
+}
+

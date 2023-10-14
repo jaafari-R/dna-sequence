@@ -49,5 +49,10 @@ int main() {
     std::cout << dna_seq4.pairSequence().getSequenceStr() << std::endl;
     std::cout << dna_seq4.pairSequence().getSequenceCStr() << std::endl;
 
+    // slice test
+    DNASequence inc_seq("aatttccccggggg");
+    DNASequence inc_seq_slice = inc_seq.slice(3, 11);
+    std::cout << inc_seq_slice.getSequenceStr() << std::endl;
+
     return 0;
 }
