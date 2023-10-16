@@ -5,6 +5,7 @@
 
 #include <string>
 #include <memory>
+#include <vector>
 
 /*  
     * This class is a representation of a DNA Sequence,
@@ -68,7 +69,24 @@ public:
     */
     DNASequence slice(size_t start = 0, size_t end = -1);
 
-    /* getters */
+    /*
+        * Returns true if the subsequence starting at index 'start_index' matches the passed subsequence
+    */
+    bool matchSubsequence(const std::string &subsequence, size_t start_index);
+    bool matchSubsequence(const char* subsequence, size_t size, size_t start_index);
+    bool matchSubsequence(const DNASequence &subsequence, size_t start_index);
+
+    /*
+        * Returns a vector containing the starting index of the first 'n' subsequences matching the passed subsequence
+    */
+    std::vector<size_t> findSubsequence(const std::string &subsequence, size_t n = -1);
+    std::vector<size_t> findSubsequence(const char* subsequence, size_t size, size_t n = -1);
+    std::vector<size_t> findSubsequence(const DNASequence &subsequence, size_t n = -1);
+
+    /* Operators */
+    char operator[](size_t index);
+
+    /* Getters */
     size_t getSize();
     std::string getSequenceStr();
     char* getSequenceCStr();

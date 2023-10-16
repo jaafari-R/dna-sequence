@@ -235,6 +235,120 @@ void DNASequence::reverseSequence(size_t start, size_t end) {
 }
 
 
+DNASequence DNASequence::slice(size_t start, size_t end) {
+    std::string seq_slice;
+    size_t i;
+    const char *sequence = this->m_sequence.get();
+
+    end = (end >= this->m_size ? this->m_size : end) - 1;
+
+    if(start >= end) {
+        return DNASequence();
+    }
+
+    i = start / 4;
+    if(start % 4) {
+        seq_slice.append(decompressNucleotides(sequence[i] << ((start % 4) * 2), 4 - start % 4));
+        start += 4 - start % 4;
+        ++i;
+    }
+
+    for(size_t loop_end = end - 3; start < loop_end; start += 4, i) {
+        seq_slice.append(decompressNucleotides(sequence[i++]));
+    }
+
+    if(start != end) {
+        seq_slice.append(decompressNucleotides(sequence[i], end + 1 - start));
+    }
+
+    return DNASequence(seq_slice);
+}
+
+
+bool DNASequence::matchSubsequence(const char* subsequence, size_t size, size_t start_index) {
+    // passed subsequence size is longer than the sequence slice length starting at start_index
+    if(this->m_size - start_index < size)
+        return false;
+    
+    for(size_t subseq_end = start_index + size; start_index < subseq_end; ++start_index) {
+        char nucleotide = *(subsequence++);
+        // Get upper case nucleotides
+        switch(nucleotide) {
+            case 'a':
+                nucleotide = 'A';
+                break;
+            case 't':
+                nucleotide = 'T';
+                break;
+            case 'c':
+                nucleotide = 'C';
+                break;
+            case 'g':
+                nucleotide = 'G';
+                break;
+        }
+
+        // Compare
+        if((*this)[start_index] != nucleotide)
+            return false;
+    }
+    return true;
+}
+
+
+bool DNASequence::matchSubsequence(const std::string &subsequence, size_t start_index) {
+    return matchSubsequence(&subsequence[0], subsequence.size(), start_index);
+}
+
+
+std::vector<size_t> DNASequence::findSubsequence(const char* subsequence, const size_t size, size_t n) {
+    std::vector<size_t> subsequence_occurances;
+
+    for(size_t subseq_start = 0, loop_end = this->m_size + 1 - size; subseq_start < loop_end && n; ++subseq_start) {
+        if(matchSubsequence(subsequence, size, subseq_start)) {
+            subsequence_occurances.push_back(subseq_start);
+            --n;
+        }
+    }
+
+    return subsequence_occurances;
+}
+
+
+std::vector<size_t> DNASequence::findSubsequence(const std::string &subsequence, size_t n) {
+    return findSubsequence(&subsequence[0], subsequence.size(), n);
+}
+
+/* -- Operators -- */
+
+char DNASequence::operator[](size_t index) {
+    if(index >= this->m_size)
+        return '-';
+
+    char val = '-';
+    size_t pos = index % 4;
+    index /= 4;
+
+
+    switch((this->m_sequence.get()[index] >> (6 - pos * 2)) & 3) {
+        case 0:
+            val = 'A';
+            break;
+        case 1:
+            val = 'T';
+            break;
+        case 2:
+            val = 'G';
+            break;
+        case 3:
+            val = 'C';
+            break;
+    }
+
+    return val;
+}
+
+
 /* -- Getters -- */
 
 size_t DNASequence::getSize() {
@@ -281,34 +395,3 @@ char* DNASequence::getSequenceCStr() {
 
     return sequence_str;
 }
-
-
-DNASequence DNASequence::slice(size_t start, size_t end) {
-    std::string seq_slice;
-    size_t i;
-    const char *sequence = this->m_sequence.get();
-
-    end = (end >= this->m_size ? this->m_size : end) - 1;
-
-    if(start >= end) {
-        return DNASequence();
-    }
-
-    i = start / 4;
-    if(start % 4) {
-        seq_slice.append(decompressNucleotides(sequence[i] << ((start % 4) * 2), 4 - start % 4));
-        start += 4 - start % 4;
-        ++i;
-    }
-
-    for(size_t loop_end = end - 3; start < loop_end; start += 4, i) {
-        seq_slice.append(decompressNucleotides(sequence[i++]));
-    }
-
-    if(start != end) {
-        seq_slice.append(decompressNucleotides(sequence[i], end + 1 - start));
-    }
-
-    return DNASequence(seq_slice);
-}
-
