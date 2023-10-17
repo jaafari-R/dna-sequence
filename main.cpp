@@ -80,7 +80,15 @@ int main() {
     std::cout << "Found the first 3 'at' at: ";
     for(auto subseq_start: find_seq3.findSubsequence(std::string("at"), 3))
         std::cout << subseq_start << "  ";
-    std::cout << std::endl;    
+    std::cout << std::endl;
+
+
+    // hasSubsequence test
+    DNASequence has_seq1("aaccttggtca");
+    std::cout << "'aaccttggtca' " << 
+        (has_seq1.hasSubsequence("aaa") ? "Contains " : "Does not contain ") << "'aaa'" << std::endl;
+    std::cout << "'aaccttggtca' " << 
+        (has_seq1.hasSubsequence("ttggtca") ? "Contains " : "Does not contain ") << "'ttggtca'" << std::endl;
 
     return 0;
 }

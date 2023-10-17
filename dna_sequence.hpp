@@ -93,6 +93,14 @@ public:
     // TODO
     size_t countSubsequence(const DNASequence &subsequence);
 
+    /*
+        *
+    */
+    bool hasSubsequence(const std::string &subsequence);
+    bool hasSubsequence(const char* subsequence, size_t size);
+    // TODO
+    bool hasSubsequence(const DNASequence &subsequence);
+
     /* Operators */
     char operator[](size_t index);
 
