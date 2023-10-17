@@ -339,6 +339,16 @@ bool DNASequence::hasSubsequence(const char* subsequence, size_t size) {
     return findSubsequence(subsequence, size, 1).size() == 1;
 }
 
+
+size_t DNASequence::findNthSubsequence(const std::string &subsequence, size_t n) {
+    return findSubsequence(subsequence, n).back();
+}
+
+
+size_t DNASequence::findNthSubsequence(const char* subsequence, size_t size, size_t n) {
+    return findSubsequence(subsequence, n).back();
+}
+
 /* -- Operators -- */
 
 char DNASequence::operator[](size_t index) {
