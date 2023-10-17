@@ -75,7 +75,11 @@ int main() {
         std::cout << subseq_start << "  ";
     std::cout << std::endl;
 
-    
+    DNASequence find_seq3("gatgcatatatatatatatttat");
+    std::cout << "Found the first 3 'at' at: ";
+    for(auto subseq_start: find_seq3.findSubsequence(std::string("at"), 3))
+        std::cout << subseq_start << "  ";
+    std::cout << std::endl;    
 
     return 0;
 }
