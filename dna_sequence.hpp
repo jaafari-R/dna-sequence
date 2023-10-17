@@ -74,7 +74,6 @@ public:
     */
     bool matchSubsequence(const std::string &subsequence, size_t start_index);
     bool matchSubsequence(const char* subsequence, size_t size, size_t start_index);
-    // TODO
     bool matchSubsequence(const DNASequence &subsequence, size_t start_index);
 
     /*

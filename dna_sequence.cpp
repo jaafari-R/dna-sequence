@@ -301,6 +301,19 @@ bool DNASequence::matchSubsequence(const std::string &subsequence, size_t start_
 }
 
 
+bool DNASequence::matchSubsequence(const DNASequence &subsequence, size_t start_index) {
+    if(subsequence.getSize() > this->m_size - start_index) {
+        return false;
+    }
+
+    for(size_t subseq_i = 0; subseq_i < subsequence.m_size; ++subseq_i, ++start_index) {
+        if(subsequence[subseq_i] != (*this)[start_index])
+            return false;
+    }
+    return true;
+}
+
+
 std::vector<size_t> DNASequence::findSubsequence(const char* subsequence, const size_t size, size_t n) {
     std::vector<size_t> subsequence_occurances;
 
