@@ -81,7 +81,6 @@ public:
     */
     std::vector<size_t> findSubsequence(const std::string &subsequence, size_t n = -1);
     std::vector<size_t> findSubsequence(const char* subsequence, size_t size, size_t n = -1);
-    // TODO
     std::vector<size_t> findSubsequence(const DNASequence &subsequence, size_t n = -1);
 
     /* 
@@ -110,7 +109,7 @@ public:
     size_t findNthSubsequence(const DNASequence &subsequence, size_t n);
 
     /* Operators */
-    char operator[](size_t index);
+    char operator[](size_t index) const;
 
     /* Getters */
     size_t getSize();

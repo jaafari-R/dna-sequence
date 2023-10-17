@@ -302,7 +302,7 @@ bool DNASequence::matchSubsequence(const std::string &subsequence, size_t start_
 
 
 bool DNASequence::matchSubsequence(const DNASequence &subsequence, size_t start_index) {
-    if(subsequence.getSize() > this->m_size - start_index) {
+    if(subsequence.m_size > this->m_size - start_index) {
         return false;
     }
 
@@ -333,6 +333,19 @@ std::vector<size_t> DNASequence::findSubsequence(const std::string &subsequence,
 }
 
 
+std::vector<size_t> DNASequence::findSubsequence(const DNASequence &subsequence, size_t n) {
+    std::vector<size_t> subsequence_occurances;
+
+    for(size_t subseq_start = 0, loop_end = this->m_size + 1 - subsequence.m_size; subseq_start < loop_end && n; ++subseq_start) {
+        if(matchSubsequence(subsequence, subseq_start)) {
+            subsequence_occurances.push_back(subseq_start);
+            --n;
+        }
+    }
+    return subsequence_occurances;
+}
+
+
 size_t DNASequence::countSubsequence(const char* subsequence, size_t size) {
     return findSubsequence(subsequence, size).size();
 }
@@ -354,17 +367,23 @@ bool DNASequence::hasSubsequence(const char* subsequence, size_t size) {
 
 
 size_t DNASequence::findNthSubsequence(const std::string &subsequence, size_t n) {
-    return findSubsequence(subsequence, n).back();
+    std::vector<size_t> first_n_occurances = findSubsequence(subsequence, n);
+    if(first_n_occurances.size() != n)
+        return -1;
+    return first_n_occurances.back();
 }
 
 
 size_t DNASequence::findNthSubsequence(const char* subsequence, size_t size, size_t n) {
-    return findSubsequence(subsequence, n).back();
+    std::vector<size_t> first_n_occurances = findSubsequence(subsequence, size, n);
+    if(first_n_occurances.size() != n)
+        return -1;
+    return first_n_occurances.back();
 }
 
 /* -- Operators -- */
 
-char DNASequence::operator[](size_t index) {
+char DNASequence::operator[](size_t index) const {
     if(index >= this->m_size)
         return '-';
 
