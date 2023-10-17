@@ -107,6 +107,8 @@ public:
 
     /* Operators */
     char operator[](size_t index) const;
+    bool operator==(const DNASequence &dnaseq) const;
+    bool operator!=(const DNASequence &dnaseq) const;
 
     /* Getters */
     size_t getSize();

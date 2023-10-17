@@ -430,6 +430,24 @@ char DNASequence::operator[](size_t index) const {
 }
 
 
+bool DNASequence::operator==(const DNASequence &dnaseq) const {
+    if(dnaseq.m_size != this->m_size) {
+        return false;
+    }
+
+    for(size_t index = 0; index < this->m_size; ++index) {
+        if((*this)[index] != dnaseq[index])
+            return false;
+    }
+    return true;
+}
+
+
+bool DNASequence::operator!=(const DNASequence &dnaseq) const {
+    return !(*this == dnaseq);
+}
+
+
 /* -- Getters -- */
 
 size_t DNASequence::getSize() {
