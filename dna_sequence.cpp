@@ -356,6 +356,11 @@ size_t DNASequence::countSubsequence(const std::string &subsequence) {
 }
 
 
+size_t DNASequence::countSubsequence(const DNASequence &subsequence) {
+    return findSubsequence(subsequence).size();
+}
+
+
 bool DNASequence::hasSubsequence(const std::string &subsequence) {
     return findSubsequence(subsequence, 1).size() == 1;
 }
@@ -363,6 +368,11 @@ bool DNASequence::hasSubsequence(const std::string &subsequence) {
 
 bool DNASequence::hasSubsequence(const char* subsequence, size_t size) {
     return findSubsequence(subsequence, size, 1).size() == 1;
+}
+
+
+bool DNASequence::hasSubsequence(const DNASequence &subsequence) {
+    return findSubsequence(subsequence, 1).size() == 1;
 }
 
 
@@ -380,6 +390,15 @@ size_t DNASequence::findNthSubsequence(const char* subsequence, size_t size, siz
         return -1;
     return first_n_occurances.back();
 }
+
+
+size_t DNASequence::findNthSubsequence(const DNASequence &subsequence, size_t n) {
+    std::vector<size_t> first_n_occurances = findSubsequence(subsequence, n);
+    if(first_n_occurances.size() != n)
+        return -1;
+    return first_n_occurances.back();
+}
+
 
 /* -- Operators -- */
 

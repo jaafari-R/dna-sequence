@@ -88,7 +88,6 @@ public:
     */
     size_t countSubsequence(const std::string &subsequence);
     size_t countSubsequence(const char* subsequence, size_t size);
-    // TODO
     size_t countSubsequence(const DNASequence &subsequence);
 
     /*
@@ -96,7 +95,6 @@ public:
     */
     bool hasSubsequence(const std::string &subsequence);
     bool hasSubsequence(const char* subsequence, size_t size);
-    // TODO
     bool hasSubsequence(const DNASequence &subsequence);
 
     /*
@@ -105,7 +103,6 @@ public:
     */
     size_t findNthSubsequence(const std::string &subsequence, size_t n);
     size_t findNthSubsequence(const char* subsequence, size_t size, size_t n);
-    // TODO
     size_t findNthSubsequence(const DNASequence &subsequence, size_t n);
 
     /* Operators */
