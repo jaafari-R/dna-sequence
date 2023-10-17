@@ -54,12 +54,13 @@ int main() {
     DNASequence inc_seq_slice = inc_seq.slice(3, 11);
     std::cout << inc_seq_slice.getSequenceStr() << std::endl;
 
-    // // findSubsequence test
+    // findSubsequence & countSubsequence test
     DNASequence find_seq1("aaaaaa");
     std::cout << "Found 'aaaaa' at: ";
     for(auto subseq_start: find_seq1.findSubsequence("aaaaa"))
         std::cout << subseq_start << "  ";
     std::cout << std::endl;
+    std::cout << "'aaaaa' has occured " << find_seq1.countSubsequence("aaaaa") << " times." << std::endl;
     std::cout << "Found 'tt' at: ";
     for(auto subseq_start: find_seq1.findSubsequence("tt"))
         std::cout << subseq_start << "  ";

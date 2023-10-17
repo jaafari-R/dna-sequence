@@ -74,6 +74,7 @@ public:
     */
     bool matchSubsequence(const std::string &subsequence, size_t start_index);
     bool matchSubsequence(const char* subsequence, size_t size, size_t start_index);
+    // TODO
     bool matchSubsequence(const DNASequence &subsequence, size_t start_index);
 
     /*
@@ -81,7 +82,16 @@ public:
     */
     std::vector<size_t> findSubsequence(const std::string &subsequence, size_t n = -1);
     std::vector<size_t> findSubsequence(const char* subsequence, size_t size, size_t n = -1);
+    // TODO
     std::vector<size_t> findSubsequence(const DNASequence &subsequence, size_t n = -1);
+
+    /* 
+        Returns the number of times a subsequence occured in a sequence
+    */
+    size_t countSubsequence(const std::string &subsequence);
+    size_t countSubsequence(const char* subsequence, size_t size);
+    // TODO
+    size_t countSubsequence(const DNASequence &subsequence);
 
     /* Operators */
     char operator[](size_t index);

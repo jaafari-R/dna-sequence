@@ -319,6 +319,17 @@ std::vector<size_t> DNASequence::findSubsequence(const std::string &subsequence,
     return findSubsequence(&subsequence[0], subsequence.size(), n);
 }
 
+
+size_t DNASequence::countSubsequence(const char* subsequence, size_t size) {
+    return findSubsequence(subsequence, size).size();
+}
+
+
+size_t DNASequence::countSubsequence(const std::string &subsequence) {
+    return findSubsequence(subsequence).size();
+}
+
+
 /* -- Operators -- */
 
 char DNASequence::operator[](size_t index) {
