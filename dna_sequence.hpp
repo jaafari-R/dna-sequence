@@ -105,6 +105,16 @@ public:
     size_t findNthSubsequence(const char* subsequence, size_t size, size_t n);
     size_t findNthSubsequence(const DNASequence &subsequence, size_t n);
 
+    /*
+        * Cut/Remove a part of the sequence,
+        * The deleted part starts at 'start_index' and ends at 'end_index'(exclusive / end_index is not included).
+        * If 'end_index' is bigger than the sequence size it's set to be the size of the sequence.
+        * if 'start_index' is bigger or equeal to the sequence size, nothing happens.
+    */
+    void erase(const std::string &subsequence, size_t n);
+    void erase(const char* subsequence, size_t size, size_t n);
+    void erase(const DNASequence &subsequence, size_t n);
+
     /* Operators */
     char operator[](size_t index) const;
     bool operator==(const DNASequence &dnaseq) const;
