@@ -64,6 +64,33 @@ char compressNucleotides(const char *patch, size_t len = 4) {
 }
 
 /*
+    * Compress a single Nucleotide
+*/
+char compressNucleotide(const char nucleotide) {
+    switch(nucleotide) {
+        // case 'A':
+        // case 'a':
+        //     return 0;
+        //     break;
+        case 'T':
+        case 't':
+            return 0b01000000;
+            break;
+        case 'G':
+        case 'g':
+            return 0b10000000;
+            break;
+        case 'C':
+        case 'c':
+            return 0b11000000;
+            break;
+        default:
+            return 0;
+    }
+}
+
+
+/*
     * Decompresses a patch of up to 4 Nucleotides from 1 char to a string
     * '00' becomes 'A'
     * '01' becomes 'T'
@@ -445,6 +472,49 @@ bool DNASequence::operator==(const DNASequence &dnaseq) const {
 
 bool DNASequence::operator!=(const DNASequence &dnaseq) const {
     return !(*this == dnaseq);
+}
+
+
+void DNASequence::setNucleotide(size_t index, char value) {
+    char* sequence = this->m_sequence.get();
+    unsigned char pos = index % 4;
+
+    if(index >= this->m_size)
+        return;
+
+    index /= 4;
+
+    // Verify Nucleotide value
+    switch(value) {
+        case 'a':
+        case 'A':
+        case 't':
+        case 'T':
+        case 'g':
+        case 'G':
+        case 'c':
+        case 'C':
+            break;
+        default:
+            return;
+    }
+
+    value = compressNucleotide(value);
+    switch(pos) {
+        case 0:
+            sequence[index] &= 0b00111111;
+            break;
+        case 1:
+            sequence[index] &= 0b11001111;
+            break;
+        case 2:
+            sequence[index] &= 0b11110011;
+            break;
+        case 3:
+            sequence[index] &= 0b11111100;
+            break;
+    }
+    sequence[index] |= value >> (pos * 2);
 }
 
 

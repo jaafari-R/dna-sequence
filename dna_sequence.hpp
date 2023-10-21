@@ -115,7 +115,15 @@ public:
     void erase(const char* subsequence, size_t size, size_t n);
     void erase(const DNASequence &subsequence, size_t n);
 
+    /*
+        * Sets the Nucleotide at index to value('A', 'T', 'C', or 'G')
+        * Passing an invalid Nucleotide value does not change the value at index
+        * If the index is bigger or equal to the size of the sequence nothing happens
+    */
+    void setNucleotide(size_t index, char value);
+
     /* Operators */
+    // Only get by operator[]
     char operator[](size_t index) const;
     bool operator==(const DNASequence &dnaseq) const;
     bool operator!=(const DNASequence &dnaseq) const;
