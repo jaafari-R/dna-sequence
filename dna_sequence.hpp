@@ -4,6 +4,7 @@
 #define DNA_SEQUENCE
 
 #include <string>
+#include <cstring>
 #include <memory>
 #include <vector>
 
@@ -127,6 +128,13 @@ public:
     char operator[](size_t index) const;
     bool operator==(const DNASequence &dnaseq) const;
     bool operator!=(const DNASequence &dnaseq) const;
+    bool operator==(const std::string &dnaseq) const;
+    bool operator!=(const std::string &dnaseq) const;
+    /* 
+        * This dnaseq CString is expected to end with a string terminator '\0'.
+    */
+    bool operator==(const char *dnaseq) const;
+    bool operator!=(const char *dnaseq) const;
 
     /* Getters */
     size_t getSize();

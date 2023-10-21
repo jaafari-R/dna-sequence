@@ -475,6 +475,38 @@ bool DNASequence::operator!=(const DNASequence &dnaseq) const {
 }
 
 
+bool DNASequence::operator==(const std::string &dnaseq) const {
+    if(this->m_size != dnaseq.size())
+        return false;
+    for(size_t index = 0; index < this->m_size; ++index) {
+        if((*this)[index] != dnaseq[index])
+            return false;
+    }
+    return true;
+}
+
+
+bool DNASequence::operator!=(const std::string &dnaseq) const {
+    return !(*this == dnaseq);
+}
+
+
+bool DNASequence::operator==(const char *dnaseq) const {
+    if(this->m_size != std::strlen(dnaseq))
+        return false;
+    for(size_t index = 0; index < this->m_size; ++index) {
+        if((*this)[index] != dnaseq[index])
+            return false;
+    }
+    return true;
+}
+
+
+bool DNASequence::operator!=(const char *dnaseq) const {
+    return !(*this == dnaseq);
+}
+
+
 void DNASequence::setNucleotide(size_t index, char value) {
     char* sequence = this->m_sequence.get();
     unsigned char pos = index % 4;
